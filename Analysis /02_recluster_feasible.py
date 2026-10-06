@@ -17,6 +17,7 @@ import json
 import csv
 import numpy as np
 from pathlib import Path
+from collections import Counter, defaultdict
 from scipy.spatial.distance import squareform
 from scipy.cluster.hierarchy import linkage, fcluster
 
@@ -263,7 +264,6 @@ def run_poi(poi_name):
     labels = fcluster(Z, t=RMSD_CUTOFF, criterion='distance')
 
     # --- 4. Rank clusters by size ---
-    from collections import Counter
     cluster_counts = Counter(labels)
     ranked = [cl for cl, _ in cluster_counts.most_common()]
 
@@ -326,7 +326,6 @@ def _fallback_to_existing_clusters(poi_name, run_dir, cfg, scores, verdicts, fea
 
 
 def _write_results(poi_name, paths, labels, run_dir, cfg, scores, verdicts, ranked=None):
-    from collections import defaultdict
     clusters = defaultdict(list)
     for p, lbl in zip(paths, labels):
         clusters[lbl].append(p)

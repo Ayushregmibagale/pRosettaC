@@ -226,7 +226,11 @@ def shift_scores_if_needed():
 
 def run_clustering(chains):
     """Run clustering (matches main.py call)."""
-    os.system('cat Init0.pdb Init1.pdb > Init.pdb')
+    with open('Init.pdb', 'w') as out:
+        for fname in ('Init0.pdb', 'Init1.pdb'):
+            if os.path.exists(fname):
+                with open(fname) as fh:
+                    out.write(fh.read())
     sys.path.insert(0, str(os.path.join(os.path.expanduser('~'), 'PRosettaC')))
     import importlib
     cl = importlib.import_module('clustering')

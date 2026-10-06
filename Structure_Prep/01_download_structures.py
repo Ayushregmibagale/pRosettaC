@@ -76,6 +76,7 @@ def extract_chain(in_pdb: Path, chain: str, out_pdb: Path) -> None:
 def main():
     # First handle VHL, which uses its own PDB ID and chain.
     vhl_dir = DATA_DIR / "VHL"
+    vhl_dir.mkdir(parents=True, exist_ok=True)
     raw_vhl = vhl_dir / f"{VHL_PDB[1]}.pdb"
 
     # Download the full VHL PDB only if it is not already present.

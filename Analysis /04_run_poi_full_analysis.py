@@ -26,9 +26,6 @@ warnings.filterwarnings('ignore')
 # ══════════════════════════════════════════════════════════════════════════════
 _RUNS_ROOT = Path(__file__).resolve().parents[2] / 'pRosettaC' / 'runs'
 
-# Legacy alias for backwards compat within this file
-RUNS_BASE = _RUNS_ROOT / 'high_affinity_degraders'
-
 POI_CONFIGS = {
     'MET': {
         'poi_min': 1053, 'poi_max': 1345, 'poi_full': 293,

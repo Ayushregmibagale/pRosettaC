@@ -22,6 +22,7 @@ from pathlib import Path
 from rdkit import Chem
 from rdkit.Chem import AllChem, rdFMCS
 from rdkit.Chem.rdchem import RWMol
+from rdkit.Geometry import rdGeometry
 from Bio import PDB
 from Bio.PDB import Superimposer
 from Bio.Align import PairwiseAligner
@@ -253,16 +254,6 @@ def mcs_remap_coords(wh_smiles, ref_smiles, ref_mol_3d):
             p = ref_conf.GetAtomPosition(ref_idx)
             coord_map[wh_idx] = np.array([p.x, p.y, p.z])
 
-    # Add hydrogens, mainly to preserve a convenient mapping of heavy atoms.
-    wh_h = Chem.AddHs(wh_mol)
-
-    # Map heavy-atom indices in the hydrogen-free molecule to the same atoms in the
-    # hydrogen-added version. AddHs preserves heavy-atom ordering.
-    hmap = {}
-    for i in range(wh_mol.GetNumAtoms()):
-        hmap[i] = i
-
-    from rdkit.Geometry import rdGeometry
     coord_map_pt = {k: rdGeometry.Point3D(*v) for k, v in coord_map.items()}
 
     # Try a simple embed on the heavy-atom molecule, then overwrite the matched atoms
@@ -370,8 +361,7 @@ def main():
     args = parser.parse_args()
 
     # Convert the CLI argument into a set for quick membership checks.
-    force_set = set(args.force) if args.force is not None else (
-        {'ALL'} if args.force is not None else set())
+    force_set = set(args.force) if args.force is not None else set()
     force_all = args.force is not None and len(args.force) == 0
 
     print("=" * 60)
